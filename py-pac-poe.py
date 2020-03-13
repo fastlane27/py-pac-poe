@@ -10,21 +10,6 @@ def print_board():
         '      -----------\n'
         f"   3   {state['board']['a3']} | {state['board']['b3']} | {state['board']['c3']}\n")
 
-def get_move():
-    move = input(f"Player {state['turn']}'s move (example B2): ").lower()
-
-    while not re.match('[A-Ca-c][1-3]', move):
-        print('Bogus move! Try again...\n')
-        move = input(f"Player {state['turn']}'s move (example B2): ").lower()
-
-    state['board'][move] = state['turn']
-    state['turn'] = 'O'
-    print_board()
-    check_winner()
-
-def check_winner():
-    get_move()
-
 def init_game():
     print('\n----------------------\n'
         "Let's play Py-Pac-Poe!\n"
@@ -39,6 +24,22 @@ def init_game():
     state['winner'] = None
     
     print_board()
+    get_move()
+
+def get_move():
+    move = ''
+    while not re.match('[A-Ca-c][1-3]', move) or state['board'][move] != ' ':
+        print('Bogus move! Try again...\n')
+        move = input(f"Player {state['turn']}'s move (example B2): ").lower()
+
+    state['board'][move] = state['turn']
+    
+    state['turn'] = 'O' if state['turn'] == 'X' else 'X'
+    
+    print_board()
+    check_winner()
+
+def check_winner():
     get_move()
 
 init_game()
