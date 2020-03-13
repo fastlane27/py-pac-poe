@@ -27,17 +27,22 @@ def init_game():
     get_move()
 
 def get_move():
-    move = ''
-    while not re.match('[A-Ca-c][1-3]', move) or state['board'][move] != ' ':
-        print('Bogus move! Try again...\n')
-        move = input(f"Player {state['turn']}'s move (example B2): ").lower()
+    prompt = f"Player {state['turn']}'s move (example B2): "
+    
+    move = input(prompt).lower()
+    while not check_move(move):
+        move = input(prompt).lower()
 
     state['board'][move] = state['turn']
-    
-    state['turn'] = 'O' if state['turn'] == 'X' else 'X'
-    
     print_board()
     check_winner()
+    state['turn'] = 'O' if state['turn'] == 'X' else 'X'
+
+def check_move(move):
+    if not re.match('[A-Ca-c][1-3]', move) or state['board'][move] != ' ':
+        print('Bogus move! Try again...\n')
+        return False
+    return True
 
 def check_winner():
     get_move()
